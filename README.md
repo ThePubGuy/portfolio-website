@@ -1,2 +1,2 @@
 # portfolio-website
-will porbably be abandoned soon
+will probably be abandoned soon
