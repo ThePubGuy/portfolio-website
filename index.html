@@ -12,29 +12,30 @@
     <!-- Navigation Bar -->
     <nav>
         <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="#" class="tab-link active" data-tab="home">Home</a></li>
+            <li><a href="#" class="tab-link" data-tab="projects">Projects</a></li>
+            <li><a href="#" class="tab-link" data-tab="about">About</a></li>
         </ul>
     </nav>
 
-    <!-- Home Section -->
-    <section id="home">
-        <h1>Welcome to My Portfolio</h1>
-        <p>This is my homepage where I showcase my work.</p>
-    </section>
+    <!-- Content Sections -->
+    <div class="content-container">
+        <section id="home" class="tab-content active">
+            <h1>Welcome to My Portfolio</h1>
+            <p>This is my homepage where I showcase my work.</p>
+        </section>
 
-    <!-- Projects Section -->
-    <section id="projects">
-        <h1>Projects</h1>
-        <p>Here are some of my programming projects.</p>
-    </section>
+        <section id="projects" class="tab-content">
+            <h1>Projects</h1>
+            <p>Here are some of my programming projects.</p>
+        </section>
 
-    <!-- About Section -->
-    <section id="about">
-        <h1>About Me</h1>
-        <p>This section contains information about me.</p>
-    </section>
+        <section id="about" class="tab-content">
+            <h1>About Me</h1>
+            <p>This section contains information about me.</p>
+        </section>
+    </div>
 
+    <script src="script.js"></script> <!-- Link to JavaScript -->
 </body>
 </html>

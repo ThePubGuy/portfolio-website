@@ -44,15 +44,28 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Style for Navigation Bar */
+/* Hide all sections by default */
+.tab-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Show only the active section */
+.tab-content.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Style for navigation bar */
 nav {
-    background-color: #333;  /* Dark background */
+    background-color: #333;
     padding: 10px 0;
-    position: fixed; /* Sticks to the top */
+    position: fixed;
     width: 100%;
     top: 0;
     left: 0;
-    z-index: 1000; /* Ensures it stays on top */
+    z-index: 1000;
 }
 
 nav ul {
@@ -76,26 +89,8 @@ nav ul li a {
     transition: 0.3s;
 }
 
-nav ul li a:hover {
+/* Highlight the active tab */
+nav ul li a.active {
     background-color: #555;
     border-radius: 5px;
-}
-
-/* Add spacing for content so it doesn't hide behind navbar */
-section {
-    padding: 80px 20px;
-    min-height: 100vh; /* Ensures full-page sections */
-}
-
-/* Different background colors for sections */
-#home {
-    background-color: #f4f4f4;
-}
-
-#projects {
-    background-color: #ddd;
-}
-
-#about {
-    background-color: #bbb;
 }
