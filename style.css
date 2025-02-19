@@ -133,6 +133,7 @@ body {
   /* Content Sections */
   .content-container {
     padding-top: 80px;
+    padding-bottom: 100px; /* Extra bottom padding so content isn't hidden by the fixed footer */
     text-align: center;
   }
   
@@ -201,12 +202,21 @@ body {
     background: rgba(255, 255, 255, 0.2);
   }
   
-  /* Footer */
+  /* Adjust timeline width on small screens */
+  @media screen and (max-width: 768px) {
+    .timeline-item {
+      width: 90%;
+    }
+  }
+  
+  /* Footer (Fixed at Bottom) */
   footer {
-    padding: 20px 0;
+    padding: 10px 0;
     background: rgba(0, 0, 0, 0.8);
     text-align: center;
-    position: relative;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
     z-index: 1000;
   }
   
