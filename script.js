@@ -24,6 +24,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Scroll smoothly to the section
             activeSection.scrollIntoView({ behavior: "smooth" });
+
+            // Hide menu after clicking (mobile only)
+            if (window.innerWidth <= 768) {
+                navLinks.classList.remove("show");
+            }
         });
     });
 

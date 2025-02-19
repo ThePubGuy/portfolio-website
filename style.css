@@ -5,7 +5,7 @@ body {
     padding: 0;
     background: linear-gradient(to right, #1e3c72, #2a5298);
     color: white;
-    scroll-behavior: smooth; /* Enables smooth scrolling */
+    scroll-behavior: smooth;
 }
 
 /* Navigation Bar */
@@ -51,6 +51,9 @@ nav {
     font-size: 18px;
     padding: 10px 15px;
     transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .nav-links a.active {
@@ -86,84 +89,16 @@ nav {
         flex-direction: column;
         background: rgba(0, 0, 0, 0.9);
         position: absolute;
-        width: 100%;
+        width: 80%;
         top: 50px;
-        left: 0;
+        left: 50%;
+        transform: translateX(-50%); /* Center the menu */
         text-align: center;
         padding: 10px 0;
+        border-radius: 10px; /* Rounded edges */
     }
 
     .nav-links.show {
         display: flex;
     }
-}
-
-/* Content Sections */
-.content-container {
-    padding-top: 80px;
-    text-align: center;
-}
-
-.tab-content {
-    display: none;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-/* Show only the active section */
-.tab-content.active {
-    display: block;
-    opacity: 1;
-}
-
-/* Projects Section */
-.projects-container {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-}
-
-.project-card {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    width: 250px;
-    transition: 0.3s;
-}
-
-.project-card:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.project-card img {
-    width: 100%;
-    border-radius: 5px;
-}
-
-.project-card a {
-    display: block;
-    color: #ffcc00;
-    margin-top: 10px;
-}
-
-/* About Section Timeline */
-.timeline {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-.timeline-item {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    width: 60%;
-    transition: 0.3s;
-}
-
-.timeline-item:hover {
-    background: rgba(255, 255, 255, 0.2);
 }
