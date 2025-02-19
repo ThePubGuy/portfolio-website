@@ -11,32 +11,35 @@
 
     <!-- Navigation Bar -->
     <nav>
-        <ul>
-            <li><a href="#" class="tab-link active" data-tab="home">Home</a></li>
-            <li><a href="#" class="tab-link" data-tab="projects">Projects</a></li>
-            <li><a href="#" class="tab-link" data-tab="about">About</a></li>
-        </ul>
+        <div class="nav-container">
+            <div class="logo">My Portfolio</div>
+            <button class="hamburger">&#9776;</button> <!-- Hamburger Icon -->
+            <ul class="nav-links">
+                <li><a href="#" class="tab-link active" data-tab="home">Home</a></li>
+                <li><a href="#" class="tab-link" data-tab="projects">Projects</a></li>
+                <li><a href="#" class="tab-link" data-tab="about">About</a></li>
+            </ul>
+        </div>
     </nav>
-
-    <!-- Content Sections -->
+    
     <div class="content-container">
-        <section id="home" class="tab-content active">
+        <section id="home" class="tab-content active animate__animated animate__fadeIn">
             <h1>Welcome to My Portfolio</h1>
             <p>This is my homepage where I showcase my work.</p>
         </section>
 
-        <section id="projects" class="tab-content">
+        <section id="projects" class="tab-content animate__animated animate__fadeIn">
             <h1>Projects</h1>
             <p>Here are some of my programming projects.</p>
         </section>
 
-        <section id="about" class="tab-content">
+        <section id="about" class="tab-content animate__animated animate__fadeIn">
             <h1>About Me</h1>
             <p>This section contains information about me.</p>
         </section>
     </div>
 
-    <!-- Link to JavaScript -->
     <script src="script.js"></script>
+
 </body>
 </html>
