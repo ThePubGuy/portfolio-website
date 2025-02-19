@@ -4,10 +4,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const hamburger = document.querySelector(".hamburger");
     const navLinks = document.querySelector(".nav-links");
   
-    // Tab switching without automatic scrolling
+    // Tab Switching
     tabs.forEach((tab) => {
       tab.addEventListener("click", function (event) {
-        event.preventDefault(); // Prevent default link behavior
+        event.preventDefault();
   
         const targetTab = this.getAttribute("data-tab");
   
@@ -17,16 +17,12 @@ document.addEventListener("DOMContentLoaded", function () {
           section.classList.remove("active", "animate__fadeIn");
         });
   
-        // Add 'active' class to clicked tab and corresponding section
+        // Activate clicked tab and corresponding section
         this.classList.add("active");
         const activeSection = document.getElementById(targetTab);
-        activeSection.classList.add(
-          "active",
-          "animate__animated",
-          "animate__fadeIn"
-        );
+        activeSection.classList.add("active", "animate__animated", "animate__fadeIn");
   
-        // Hide hamburger menu (mobile only) after clicking a tab
+        // Hide mobile menu after clicking (if applicable)
         if (window.innerWidth <= 768) {
           navLinks.classList.remove("show");
         }
@@ -36,6 +32,78 @@ document.addEventListener("DOMContentLoaded", function () {
     // Hamburger Menu Toggle
     hamburger.addEventListener("click", function () {
       navLinks.classList.toggle("show");
+    });
+  
+    // Theme Switcher Logic
+    const themeSwitcher = document.querySelector('.theme-switcher');
+    themeSwitcher.addEventListener('click', function () {
+      document.body.classList.toggle('light-theme');
+      let icon = this.querySelector('i');
+      if (document.body.classList.contains('light-theme')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+      } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+      }
+    });
+  
+    // Initialize Particles.js with Configuration
+    particlesJS("particles-js", {
+      "particles": {
+        "number": {
+          "value": 80,
+          "density": {
+            "enable": true,
+            "value_area": 800
+          }
+        },
+        "color": { "value": "#ffffff" },
+        "shape": {
+          "type": "circle",
+          "stroke": { "width": 0, "color": "#000000" }
+        },
+        "opacity": {
+          "value": 0.5,
+          "random": false,
+          "anim": { "enable": false }
+        },
+        "size": {
+          "value": 3,
+          "random": true,
+          "anim": { "enable": false }
+        },
+        "line_linked": {
+          "enable": true,
+          "distance": 150,
+          "color": "#ffffff",
+          "opacity": 0.4,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 6,
+          "direction": "none",
+          "random": false,
+          "straight": false,
+          "out_mode": "out"
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": { "enable": true, "mode": "grab" },
+          "onclick": { "enable": true, "mode": "push" }
+        },
+        "modes": {
+          "grab": {
+            "distance": 140,
+            "line_linked": { "opacity": 1 }
+          },
+          "push": { "particles_nb": 4 }
+        }
+      },
+      "retina_detect": true
     });
   });
   

@@ -5,54 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Portfolio</title>
   <!-- Animate.css for basic animations -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <!-- FontAwesome for icons -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <!-- AOS for scroll animations -->
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
-  />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+  <!-- Your custom styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Particle Background Container -->
+  <div id="particles-js"></div>
+
   <!-- Navigation Bar -->
   <nav>
     <div class="nav-container">
       <div class="logo">My Portfolio</div>
+      <!-- Theme Switcher Button -->
+      <button class="theme-switcher"><i class="fas fa-moon"></i></button>
+      <!-- Hamburger Menu Button -->
       <button class="hamburger"><i class="fas fa-bars"></i></button>
       <ul class="nav-links">
         <li>
-          <a href="#" class="tab-link active" data-tab="home"
-            ><i class="fas fa-home"></i> Home</a
-          >
+          <a href="#" class="tab-link active" data-tab="home">
+            <i class="fas fa-home"></i> Home
+          </a>
         </li>
         <li>
-          <a href="#" class="tab-link" data-tab="projects"
-            ><i class="fas fa-tools"></i> Projects</a
-          >
+          <a href="#" class="tab-link" data-tab="projects">
+            <i class="fas fa-tools"></i> Projects
+          </a>
         </li>
         <li>
-          <a href="#" class="tab-link" data-tab="about"
-            ><i class="fas fa-info-circle"></i> About</a
-          >
+          <a href="#" class="tab-link" data-tab="about">
+            <i class="fas fa-info-circle"></i> About
+          </a>
         </li>
       </ul>
     </div>
   </nav>
 
+  <!-- Main Content -->
   <div class="content-container">
     <!-- Home Section -->
-    <section
-      id="home"
-      class="tab-content active animate__animated animate__fadeIn"
-    >
+    <section id="home" class="tab-content active animate__animated animate__fadeIn">
       <h1>Welcome to My Portfolio</h1>
       <p>This is my homepage where I showcase my work.</p>
     </section>
@@ -65,17 +61,13 @@
           <img src="images/project1.jpg" alt="Project 1" />
           <h3>Project 1</h3>
           <p>A description of my first project.</p>
-          <a href="INSERT PROJECT LINK HERE" target="_blank"
-            >View on GitHub</a
-          >
+          <a href="add project link" target="_blank">View on GitHub</a>
         </div>
         <div class="project-card" data-aos="fade-up">
           <img src="images/project2.jpg" alt="Project 2" />
           <h3>Project 2</h3>
           <p>A description of my second project.</p>
-          <a href="INSERT PROJECT LINK HERE" target="_blank"
-            >View on GitHub</a
-          >
+          <a href="add project link" target="_blank">View on GitHub</a>
         </div>
       </div>
     </section>
@@ -86,9 +78,7 @@
       <div class="timeline">
         <div class="timeline-item" data-aos="fade-right">
           <h3>ts</h3>
-          <p>
-            pmo
-          </p>
+          <p>pmo</p>
         </div>
         <div class="timeline-item" data-aos="fade-right">
           <h3>ts</h3>
@@ -98,7 +88,20 @@
     </section>
   </div>
 
-  <!-- Include AOS JS and initialize -->
+  <!-- Footer with Social Links -->
+  <footer>
+    <div class="footer-links">
+      <a href="mailto:reecetaylor07@gmail.com" target="_blank">
+        <i class="fas fa-envelope"></i> Email
+      </a>
+      <a href="https://www.instagram.com/official_reece_taylor" target="_blank">
+        <i class="fab fa-instagram"></i> Instagram
+      </a>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <!-- AOS JS -->
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script>
     AOS.init({
@@ -106,6 +109,9 @@
       once: true,
     });
   </script>
+  <!-- Particles.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <!-- Custom Script -->
   <script src="script.js"></script>
 </body>
 </html>

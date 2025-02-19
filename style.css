@@ -3,9 +3,26 @@ body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(to right, #1e3c72, #2a5298);
+    background: #1e3c72;
     color: white;
     scroll-behavior: smooth;
+    transition: background 0.3s, color 0.3s;
+  }
+  
+  /* Light Theme Overrides */
+  body.light-theme {
+    background: #f4f4f4;
+    color: #333;
+  }
+  
+  /* Particles Background */
+  #particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    top: 0;
+    left: 0;
   }
   
   /* Navigation Bar */
@@ -31,7 +48,17 @@ body {
     font-weight: bold;
   }
   
-  /* Navbar links */
+  /* Theme Switcher Button */
+  .theme-switcher {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  /* Navbar Links */
   .nav-links {
     list-style: none;
     display: flex;
@@ -115,7 +142,7 @@ body {
     transition: opacity 0.5s ease-in-out;
   }
   
-  /* Show only the active section */
+  /* Visible Tab Content */
   .tab-content.active {
     display: block;
     opacity: 1;
@@ -172,5 +199,26 @@ body {
   
   .timeline-item:hover {
     background: rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Footer */
+  footer {
+    padding: 20px 0;
+    background: rgba(0, 0, 0, 0.8);
+    text-align: center;
+    position: relative;
+    z-index: 1000;
+  }
+  
+  .footer-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 18px;
+    transition: color 0.3s;
+  }
+  
+  .footer-links a:hover {
+    color: #ffcc00;
   }
   
