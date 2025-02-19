@@ -21,6 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
             this.classList.add("active");
             const activeSection = document.getElementById(targetTab);
             activeSection.classList.add("active", "animate__animated", "animate__fadeIn");
+
+            // Scroll smoothly to the section
+            activeSection.scrollIntoView({ behavior: "smooth" });
         });
     });
 

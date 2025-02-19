@@ -5,6 +5,7 @@ body {
     padding: 0;
     background: linear-gradient(to right, #1e3c72, #2a5298);
     color: white;
+    scroll-behavior: smooth; /* Enables smooth scrolling */
 }
 
 /* Navigation Bar */
@@ -63,6 +64,11 @@ nav {
     border: none;
     color: white;
     cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    right: 20px; /* Ensures it's fully visible */
+    top: 10px;
+    z-index: 1100;
 }
 
 /* Responsive Styles */
@@ -104,4 +110,9 @@ nav {
 .tab-content.active {
     display: block;
     opacity: 1;
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
 }
