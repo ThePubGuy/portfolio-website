@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Portfolio</title>
+  <meta name="description" content="Reece Taylor's portfolio showcasing web development projects and skills." />
+  <title>Reece Taylor</title>
   <!-- Animate.css for basic animations -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <!-- FontAwesome for icons -->
@@ -17,36 +18,36 @@
   <!-- Particle Background Container -->
   <div id="particles-js"></div>
 
-  <!-- Navigation Bar -->
-  <nav>
-    <div class="nav-container">
-      <div class="logo">My Portfolio</div>
-      <!-- Theme Switcher Button -->
-      <button class="theme-switcher"><i class="fas fa-moon"></i></button>
-      <!-- Hamburger Menu Button -->
-      <button class="hamburger"><i class="fas fa-bars"></i></button>
-      <ul class="nav-links">
-        <li>
-          <a href="#" class="tab-link active" data-tab="home">
-            <i class="fas fa-home"></i> Home
-          </a>
-        </li>
-        <li>
-          <a href="#" class="tab-link" data-tab="projects">
-            <i class="fas fa-tools"></i> Projects
-          </a>
-        </li>
-        <li>
-          <a href="#" class="tab-link" data-tab="about">
-            <i class="fas fa-info-circle"></i> About
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+  <!-- Header with Navigation -->
+  <header>
+    <nav role="navigation">
+      <div class="nav-container">
+        <div class="logo">My Portfolio</div>
+        <button class="theme-switcher" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+        <button class="hamburger" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+        <ul class="nav-links">
+          <li>
+            <a href="#" class="tab-link active" data-tab="home">
+              <i class="fas fa-home"></i> Home
+            </a>
+          </li>
+          <li>
+            <a href="#" class="tab-link" data-tab="projects">
+              <i class="fas fa-tools"></i> Projects
+            </a>
+          </li>
+          <li>
+            <a href="#" class="tab-link" data-tab="about">
+              <i class="fas fa-info-circle"></i> About
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
 
   <!-- Main Content -->
-  <div class="content-container">
+  <main class="content-container">
     <!-- Home Section -->
     <section id="home" class="tab-content active animate__animated animate__fadeIn">
       <h1>Welcome to My Portfolio</h1>
@@ -58,16 +59,16 @@
       <h1>Projects</h1>
       <div class="projects-container">
         <div class="project-card" data-aos="fade-up">
-          <img src="images/project1.jpg" alt="Project 1" />
+          <img src="images/project1.jpg" alt="Project 1 screenshot" />
           <h3>Project 1</h3>
           <p>A description of my first project.</p>
-          <a href="INSERT PROJECT" target="_blank">View on GitHub</a>
+          <a href="#" target="_blank">View on GitHub</a>
         </div>
         <div class="project-card" data-aos="fade-up">
-          <img src="images/project2.jpg" alt="Project 2" />
+          <img src="images/project2.jpg" alt="Project 2 screenshot" />
           <h3>Project 2</h3>
           <p>A description of my second project.</p>
-          <a href="INSERT PROJECT" target="_blank">View on GitHub</a>
+          <a href="#" target="_blank">View on GitHub</a>
         </div>
       </div>
     </section>
@@ -77,16 +78,16 @@
       <h1>About Me</h1>
       <div class="timeline">
         <div class="timeline-item" data-aos="fade-right">
-          <h3>ts</h3>
-          <p>pmo</p>
+          <h3>Software Developer (2023 - Present)</h3>
+          <p>Working on exciting projects like this portfolio!</p>
         </div>
         <div class="timeline-item" data-aos="fade-right">
-          <h3>ts</h3>
-          <p>pmo</p>
+          <h3>Student (2018 - 2022)</h3>
+          <p>Studied Computer Science and built foundational skills.</p>
         </div>
       </div>
     </section>
-  </div>
+  </main>
 
   <!-- Footer with Social Links (Fixed at Bottom) -->
   <footer>
