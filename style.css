@@ -2,11 +2,15 @@
   --primary-bg: #1e3c72;
   --primary-text: white;
   --secondary-bg: rgba(0, 0, 0, 0.8);
-  --highlight: #ffcc00;
+  --highlight: #ffb300; /* Softened for better contrast */
   --card-bg: rgba(255, 255, 255, 0.1);
   --card-hover-bg: rgba(255, 255, 255, 0.2);
   --spacing-sm: 10px;
   --spacing-md: 20px;
+  --font-size-base: 16px;
+  --font-size-h1: 2.5rem;
+  --font-size-h3: 1.25rem;
+  --font-size-p: 1rem;
 }
 
 body {
@@ -17,6 +21,7 @@ body {
   color: var(--primary-text);
   scroll-behavior: smooth;
   transition: background 0.3s, color 0.3s;
+  font-size: var(--font-size-base);
 }
 
 body.light-theme {
@@ -26,6 +31,10 @@ body.light-theme {
   --card-bg: rgba(0, 0, 0, 0.1);
   --card-hover-bg: rgba(0, 0, 0, 0.2);
 }
+
+h1 { font-size: var(--font-size-h1); }
+h3 { font-size: var(--font-size-h3); }
+p { font-size: var(--font-size-p); }
 
 #particles-js {
   position: fixed;
@@ -51,6 +60,8 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
   position: relative;
 }
 
@@ -65,10 +76,7 @@ nav {
   color: var(--primary-text);
   font-size: 20px;
   cursor: pointer;
-  margin-right: var(--spacing-sm);
-  position: absolute; /* Added for mobile positioning */
-  right: 60px; /* Position to left of hamburger */
-  top: var(--spacing-sm);
+  margin-right: 10px;
 }
 
 .nav-links {
@@ -114,10 +122,6 @@ nav {
   color: var(--primary-text);
   cursor: pointer;
   padding: var(--spacing-sm);
-  position: absolute;
-  right: var(--spacing-md);
-  top: var(--spacing-sm);
-  z-index: 1100;
 }
 
 @media screen and (max-width: 768px) {
@@ -125,32 +129,34 @@ nav {
     display: block;
   }
 
+  .nav-container {
+    flex-wrap: wrap;
+  }
+
+  .theme-switcher {
+    order: 1;
+  }
+
+  .hamburger {
+    order: 2;
+  }
+
   .nav-links {
     display: none;
     flex-direction: column;
     background: var(--secondary-bg);
-    position: fixed;
+    position: absolute;
     width: 100%;
     top: 60px;
     left: 0;
     text-align: center;
     padding: var(--spacing-md) 0;
-    border-radius: 0;
     transform: translateY(-100%);
   }
 
   .nav-links.show {
     display: flex;
     transform: translateY(0);
-  }
-
-  /* Ensure theme-switcher and hamburger don't overlap */
-  .theme-switcher {
-    right: 50px; /* Adjusted for mobile */
-  }
-
-  .hamburger {
-    right: 10px; /* Slightly adjusted for spacing */
   }
 }
 
@@ -187,12 +193,14 @@ nav {
   text-align: center;
   width: 250px;
   min-width: 200px;
-  transition: transform 0.3s ease, background 0.3s ease;
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--card-hover-bg);
 }
 
 .project-card:hover {
   transform: scale(1.02);
   background: var(--card-hover-bg);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .project-card img {
@@ -217,7 +225,6 @@ nav {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Added for better centering */
   gap: var(--spacing-md);
 }
 
@@ -226,19 +233,19 @@ nav {
   padding: 15px;
   border-radius: 8px;
   text-align: center;
-  width: 100%; /* Changed from 60% */
-  max-width: 600px; /* Added to constrain width and center better */
-  margin: 0 auto; /* Explicit centering */
-  transition: background 0.3s;
+  width: 100%;
+  max-width: 600px;
+  transition: background 0.3s, box-shadow 0.3s;
 }
 
 .timeline-item:hover {
   background: var(--card-hover-bg);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 @media screen and (max-width: 768px) {
   .timeline-item {
-    max-width: 90%; /* Adjusted for mobile */
+    max-width: 90%;
   }
 }
 
@@ -266,4 +273,24 @@ footer {
 .footer-links a:hover,
 .footer-links a:focus {
   color: var(--highlight);
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  background: var(--highlight);
+  color: var(--primary-bg);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 1000;
+}
+
+.back-to-top.visible {
+  opacity: 1;
 }
