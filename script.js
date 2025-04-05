@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Macro Hub Functions
-  const fmpApiKey = "YOUR_FMP_API_KEY"; // Replace with your actual API key
+  const fmpApiKey = "?apikey=Xu2OUy8tb3K0eswCJanBbEVGd7k9pRDU"
 
   async function fetchIndicesQuotes() {
     console.log("Fetching indices quotes");
