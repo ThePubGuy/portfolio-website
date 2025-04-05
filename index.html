@@ -3,16 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="One Stop Shop For Reece Taylors Projects" />
+  <meta name="description" content="Reece Taylor's portfolio showcasing web development projects and skills." />
   <title>Reece Taylor</title>
   <!-- Favicon -->
   <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-  <!-- Animate.css for basic animations -->
+  <!-- Animate.css for tab transition animations -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <!-- FontAwesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <!-- AOS for scroll animations -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+  <!-- Chart.js for charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- Custom styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -41,6 +43,11 @@
           <li>
             <a href="#" class="tab-link" data-tab="about">
               <i class="fas fa-info-circle"></i> About
+            </a>
+          </li>
+          <li>
+            <a href="#" class="tab-link" data-tab="macro-hub">
+              <i class="fas fa-chart-line"></i> Macro Hub
             </a>
           </li>
         </ul>
@@ -86,6 +93,31 @@
         <div class="timeline-item" data-aos="fade-right" data-aos-delay="200">
           <h3>Coming soon</h3>
           <p>------</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Macro Hub Section -->
+    <section id="macro-hub" class="tab-content animate__animated animate__fadeIn">
+      <h1>Macroeconomic Hub</h1>
+      <div class="indices-container">
+        <div class="index-card" id="dji">
+          <h3>Dow Jones Industrial Average</h3>
+          <p>Current: <span class="price"></span></p>
+          <p>Change: <span class="change"></span> (<span class="percent"></span>%)</p>
+          <canvas id="dji-chart" width="400" height="200"></canvas>
+        </div>
+        <div class="index-card" id="spx">
+          <h3>S&P 500</h3>
+          <p>Current: <span class="price"></span></p>
+          <p>Change: <span class="change"></span> (<span class="percent"></span>%)</p>
+          <canvas id="spx-chart" width="400" height="200"></canvas>
+        </div>
+        <div class="index-card" id="ixic">
+          <h3>Nasdaq Composite</h3>
+          <p>Current: <span class="price"></span></p>
+          <p>Change: <span class="change"></span> (<span class="percent"></span>%)</p>
+          <canvas id="ixic-chart" width="400" height="200"></canvas>
         </div>
       </div>
     </section>
