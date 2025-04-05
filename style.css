@@ -1,3 +1,4 @@
+/* Base Styles */
 :root {
   --primary-bg: #1e3c72;
   --primary-text: white;
@@ -286,4 +287,40 @@ footer {
 
 .back-to-top.visible {
   opacity: 1;
+}
+
+/* Macro Hub Styles */
+.indices-container {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+.index-card {
+  background: var(--card-bg);
+  padding: 15px;
+  border-radius: 8px;
+  width: 300px;
+  min-width: 250px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.index-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.positive {
+  color: green;
+}
+
+.negative {
+  color: red;
+}
+
+.error {
+  color: red;
+  text-align: center;
 }
