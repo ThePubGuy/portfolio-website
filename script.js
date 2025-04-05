@@ -1,326 +1,156 @@
-/* Base Styles */
-:root {
-  --primary-bg: #1e3c72;
-  --primary-text: white;
-  --secondary-bg: rgba(0, 0, 0, 0.8);
-  --highlight: #ffb300;
-  --card-bg: rgba(255, 255, 255, 0.1);
-  --card-hover-bg: rgba(255, 255, 255, 0.2);
-  --spacing-sm: 10px;
-  --spacing-md: 20px;
-  --font-size-base: 16px;
-  --font-size-h1: 2.5rem;
-  --font-size-h3: 1.25rem;
-  --font-size-p: 1rem;
-}
+document.addEventListener("DOMContentLoaded", () => {
+  // DOM Elements
+  const tabs = document.querySelectorAll(".tab-link");
+  const sections = document.querySelectorAll(".tab-content");
+  const hamburger = document.querySelector(".hamburger");
+  const navLinks = document.querySelector(".nav-links");
+  const themeSwitcher = document.querySelector(".theme-switcher");
+  const themeIcon = themeSwitcher.querySelector("i");
+  const backToTop = document.querySelector(".back-to-top");
 
-body {
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-  padding: 0;
-  background: var(--primary-bg);
-  color: var(--primary-text);
-  scroll-behavior: smooth;
-  transition: background 0.3s, color 0.3s;
-  font-size: var(--font-size-base);
-}
+  // Particle Configurations
+  const baseParticlesConfig = {
+    particles: {
+      number: { value: window.innerWidth < 768 ? 40 : 80, density: { enable: true, value_area: 800 } },
+      shape: { type: "circle", stroke: { width: 0 } },
+      opacity: { value: 0.5, random: false, anim: { enable: false } },
+      size: { value: 3, random: true, anim: { enable: false } },
+      line_linked: { enable: true, distance: 150, opacity: 0.4, width: 1 },
+      move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out" }
+    },
+    interactivity: window.innerWidth < 768 ? { events: {} } : {
+      detect_on: "canvas",
+      events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" } },
+      modes: { grab: { distance: 140, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } }
+    },
+    retina_detect: true
+  };
 
-body.light-theme {
-  --primary-bg: #f4f4f4;
-  --primary-text: #333;
-  --secondary-bg: rgba(0, 0, 0, 0.6);
-  --card-bg: rgba(0, 0, 0, 0.1);
-  --card-hover-bg: rgba(0, 0, 0, 0.2);
-}
+  const particleConfigs = {
+    dark: { ...baseParticlesConfig, particles: { ...baseParticlesConfig.particles, color: { value: "#ffffff" }, line_linked: { ...baseParticlesConfig.particles.line_linked, color: "#ffffff" } } },
+    light: { ...baseParticlesConfig, particles: { ...baseParticlesConfig.particles, color: { value: "#000000" }, line_linked: { ...baseParticlesConfig.particles.line_linked, color: "#000000" } } }
+  };
 
-h1 { font-size: var(--font-size-h1); }
-h3 { font-size: var(--font-size-h3); }
-p { font-size: var(--font-size-p); }
+  // Functions
+  const switchTab = (tab) => {
+    const targetTab = tab.getAttribute("data-tab");
+    tabs.forEach(t => t.classList.remove("active"));
+    sections.forEach(s => s.classList.remove("active", "animate__animated", "animate__fadeIn"));
+    tab.classList.add("active");
+    const activeSection = document.getElementById(targetTab);
+    activeSection.classList.add("active", "animate__animated", "animate__fadeIn");
+    activeSection.addEventListener("animationend", () => {
+      activeSection.classList.remove("animate__animated", "animate__fadeIn");
+    }, { once: true });
+    if (window.innerWidth <= 768) navLinks.classList.remove("show");
+    activeSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (targetTab === 'macro-hub' && !macroHubLoaded) {
+      fetchIndicesQuotes();
+      fetchIndexHistorical('DJI', 'dji-chart');
+      fetchIndexHistorical('SPX', 'spx-chart');
+      fetchIndexHistorical('IXIC', 'ixic-chart');
+      macroHubLoaded = true;
+    }
+  };
 
-#particles-js {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  top: 0;
-  left: 0;
-}
+  const toggleMenu = () => navLinks.classList.toggle("show");
 
-nav {
-  background-color: var(--secondary-bg);
-  padding: var(--spacing-sm) var(--spacing-md);
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
+  const toggleTheme = () => {
+    const isLight = document.body.classList.toggle("light-theme");
+    themeIcon.classList.toggle("fa-moon", !isLight);
+    themeIcon.classList.toggle("fa-sun", isLight);
+    try {
+      particlesJS("particles-js", isLight ? particleConfigs.light : particleConfigs.dark);
+    } catch (e) {
+      console.error("Particles.js failed to load:", e);
+    }
+    localStorage.setItem("theme", isLight ? "light" : "dark");
+  };
 
-.nav-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-}
+  // Macro Hub Functions
+  let macroHubLoaded = false;
+  const fmpApiKey = 'YOUR_FMP_API_KEY'; // Replace with your actual API key
 
-.logo {
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.theme-switcher {
-  background: none;
-  border: none;
-  color: var(--primary-text);
-  font-size: 20px;
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: var(--spacing-md);
-  margin: 0;
-  padding: 0;
-  transition: transform 0.3s ease-in-out;
-  transform: translateY(0);
-}
-
-.nav-links li {
-  display: inline;
-}
-
-.nav-links a {
-  color: var(--primary-text);
-  text-decoration: none;
-  font-size: 18px;
-  padding: var(--spacing-sm) 15px;
-  transition: background 0.3s, color 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.nav-links a:hover,
-.nav-links a:focus {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.nav-links a.active {
-  background-color: #555;
-  border-radius: 5px;
-}
-
-.hamburger {
-  display: none;
-  font-size: 24px;
-  background: none;
-  border: none;
-  color: var(--primary-text);
-  cursor: pointer;
-  padding: var(--spacing-sm);
-}
-
-@media screen and (max-width: 768px) {
-  .hamburger {
-    display: block;
+  async function fetchIndicesQuotes() {
+    const url = `https://financialmodelingprep.com/api/v3/quote/DJI,SPX,IXIC?apikey=${fmpApiKey}`;
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      data.forEach(index => {
+        const symbol = index.symbol;
+        const price = index.price;
+        const change = index.change;
+        const percent = index.changesPercentage;
+        const cardId = symbol.toLowerCase();
+        const card = document.getElementById(cardId);
+        if (card) {
+          card.querySelector('.price').textContent = price.toFixed(2);
+          card.querySelector('.change').textContent = change.toFixed(2);
+          card.querySelector('.percent').textContent = percent.toFixed(2);
+          if (change > 0) card.querySelector('.change').classList.add('positive');
+          else if (change < 0) card.querySelector('.change').classList.add('negative');
+        }
+      });
+    } catch (error) {
+      console.error('Error fetching indices quotes:', error);
+      const container = document.querySelector('.indices-container');
+      container.innerHTML = '<p class="error">Failed to load data. Please try again later.</p>';
+    }
   }
 
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    background: var(--secondary-bg);
-    position: absolute;
-    width: 100%;
-    top: 60px;
-    left: 0;
-    text-align: center;
-    padding: var(--spacing-md) 0;
-    transform: translateY(-100%);
+  async function fetchIndexHistorical(symbol, canvasId) {
+    const url = `https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}?serietype=line&apikey=${fmpApiKey}`;
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      const historical = data.historical;
+      if (historical) {
+        const dates = historical.map(d => d.date).reverse();
+        const closes = historical.map(d => d.close).reverse();
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: { labels: dates.slice(0, 7), datasets: [{ label: symbol, data: closes.slice(0, 7), borderColor: 'rgba(75, 192, 192, 1)', backgroundColor: 'rgba(75, 192, 192, 0.2)' }] },
+          options: { scales: { y: { beginAtZero: false } } }
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching historical data for', symbol, error);
+    }
   }
 
-  .nav-links.show {
-    display: flex;
-    transform: translateY(0);
+  // Initialize Theme and Particles
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "light") {
+    document.body.classList.add("light-theme");
+    themeIcon.classList.remove("fa-moon");
+    themeIcon.classList.add("fa-sun");
+    try {
+      particlesJS("particles-js", particleConfigs.light);
+    } catch (e) {
+      console.error("Particles.js failed to load:", e);
+    }
+  } else {
+    try {
+      particlesJS("particles-js", particleConfigs.dark);
+    } catch (e) {
+      console.error("Particles.js failed to load:", e);
+    }
   }
-}
 
-.content-container {
-  padding-top: 80px;
-  padding-bottom: 100px;
-  text-align: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+  // Back-to-Top Functionality
+  window.addEventListener("scroll", () => {
+    backToTop.classList.toggle("visible", window.scrollY > 300);
+  });
+  backToTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 
-.tab-content {
-  display: none;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-}
-
-.tab-content.active {
-  display: block;
-  opacity: 1;
-}
-
-.projects-container {
-  display: flex;
-  gap: var(--spacing-md);
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.project-card {
-  background: var(--card-bg);
-  padding: 15px;
-  border-radius: 8px;
-  text-align: center;
-  width: 250px;
-  min-width: 200px;
-  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid var(--card-hover-bg);
-}
-
-.project-card:hover {
-  transform: scale(1.05);
-  background: var(--card-hover-bg);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.project-card img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 5px;
-  transition: transform 0.3s ease;
-}
-
-.project-card:hover img {
-  transform: scale(1.1);
-}
-
-.project-card a {
-  display: block;
-  color: var(--highlight);
-  margin-top: var(--spacing-sm);
-}
-
-.project-card a:hover,
-.project-card a:focus {
-  color: #ffd633;
-}
-
-.timeline {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-md);
-}
-
-.timeline-item {
-  background: var(--card-bg);
-  padding: 15px;
-  border-radius: 8px;
-  text-align: center;
-  width: 100%;
-  max-width: 600px;
-  transition: background 0.3s, box-shadow 0.3s;
-}
-
-.timeline-item:hover {
-  background: var(--card-hover-bg);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-@media screen and (max-width: 768px) {
-  .timeline-item {
-    max-width: 90%;
-  }
-}
-
-footer {
-  padding: 15px 0;
-  background: var(--secondary-bg);
-  text-align: center;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-.footer-links a {
-  color: var(--primary-text);
-  text-decoration: none;
-  margin: 0 var(--spacing-md);
-  font-size: 18px;
-  transition: color 0.3s;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.footer-links a:hover,
-.footer-links a:focus {
-  color: var(--highlight);
-}
-
-.back-to-top {
-  position: fixed;
-  bottom: 70px;
-  right: 20px;
-  background: var(--highlight);
-  color: var(--primary-bg);
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.3s;
-  z-index: 1000;
-}
-
-.back-to-top.visible {
-  opacity: 1;
-}
-
-/* Macro Hub Styles */
-.indices-container {
-  display: flex;
-  gap: var(--spacing-md);
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 20px;
-}
-
-.index-card {
-  background: var(--card-bg);
-  padding: 15px;
-  border-radius: 8px;
-  width: 300px;
-  min-width: 250px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.index-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.positive {
-  color: green;
-}
-
-.negative {
-  color: red;
-}
-
-.error {
-  color: red;
-  text-align: center;
-}
+  // Event Listeners
+  tabs.forEach(tab => tab.addEventListener("click", e => {
+    e.preventDefault();
+    switchTab(tab);
+  }));
+  hamburger.addEventListener("click", toggleMenu);
+  themeSwitcher.addEventListener("click", toggleTheme);
+});
