@@ -312,17 +312,23 @@ footer {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+.stock-card {
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 .positive {
-  color: green;
+  background-color: #e6ffe6; /* Light green */
+  color: #006600;
 }
-
 .negative {
-  color: red;
+  background-color: #ffe6e6; /* Light red */
+  color: #660000;
 }
-
 .error {
-  color: red;
-  text-align: center;
+  color: #ff0000;
+  font-style: italic;
 }
 :root {
   --chart-line-color: #4bc0c0;
