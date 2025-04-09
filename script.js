@@ -73,13 +73,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.innerWidth <= 768) navLinks.classList.remove("show");
     activeSection.scrollIntoView({ behavior: "smooth", block: "start" });
 
-    // Macro Hub Data Fetch
+    // Macro Hub Data Fetch for Gainers and Losers
     if (targetTab === "macro-hub" && !window.macroHubLoaded) {
-      console.log("Loading Macro Hub data");
-      fetchIndicesQuotes();
-      fetchIndexHistorical("^AAPL", "aapl-chart");
-      fetchIndexHistorical("^TSLA", "tsla-chart");
-      fetchIndexHistorical("^NVDA", "nvda-chart");
+      console.log("Loading Macro Hub data: Gainers and Losers");
+      fetchTopGainers();
+      fetchTopLosers();
       window.macroHubLoaded = true;
     }
   };
@@ -107,131 +105,62 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("theme", isLight ? "light" : "dark");
   };
 
-  // Macro Hub Functions
-  const fmpApiKey = "Xu2OUy8tb3K0eswCJanBbEVGd7k9pRDU";
-  const symbolMapping = {
-    '^AAPL': 'aapl',
-    '^TSLA': 'tsla',
-    '^NVDA': 'nvda'
-  };
+  // Macro Hub Functions for Gainers and Losers
+  const fmpApiKey = "your_actual_fmp_api_key_here"; // Replace with your actual FMP API key
 
-  async function fetchIndicesQuotes() {
-    console.log("Fetching indices quotes");
-    const url = `https://financialmodelingprep.com/api/v3/quote/^AAPL,^TSLA,^NVDA?apikey=${fmpApiKey}`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log("Raw API response:", data);
-      if (!Array.isArray(data)) {
-        throw new Error("API response is not an array: " + JSON.stringify(data));
-      }
-      data.forEach(index => {
-        const symbol = index.symbol;
-        const cardId = symbolMapping[symbol];
-        const card = document.getElementById(cardId);
-        if (card) {
-          card.querySelector(".price").textContent = index.price ? index.price.toFixed(2) : 'N/A';
-          card.querySelector(".change").textContent = index.change ? index.change.toFixed(2) : 'N/A';
-          card.querySelector(".percent").textContent = index.changesPercentage ? index.changesPercentage.toFixed(2) : 'N/A';
-          if (index.change > 0) card.querySelector(".change").classList.add("positive");
-          else if (index.change < 0) card.querySelector(".change").classList.add("negative");
-        } else {
-          console.warn(`No card found for ${symbol}`);
-        }
-      });
-    } catch (error) {
-      console.error("Error fetching indices quotes:", error.message);
-      const container = document.querySelector(".indices-container");
-      if (container) container.innerHTML = '<p class="error">Failed to load data: ' + error.message + '</p>';
-    }
-  }
-
-  async function fetchIndexHistorical(symbol, canvasId) {
-    console.log(`Fetching historical data for ${symbol}`);
-    const url = `https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}?serietype=line&apikey=${fmpApiKey}`;
+  async function fetchTopGainers() {
+    console.log("Fetching top gainers");
+    const url = `https://financialmodelingprep.com/api/v3/gainers?apikey=${fmpApiKey}`;
     try {
       const response = await fetch(url);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       const data = await response.json();
-      const historical = data.historical;
-      if (historical && Array.isArray(historical)) {
-        console.log(`Historical data for ${symbol}:`, historical);
-        const dates = historical.map(d => d.date).reverse();
-        const closes = historical.map(d => d.close).reverse();
-        const ctx = document.getElementById(canvasId)?.getContext("2d");
-        if (ctx) {
-          // Get theme-aware colors from CSS variables
-          const lineColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-line-color').trim();
-          const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-background-color').trim();
-          
-          new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: dates.slice(0, 7), // Last 7 days
-              datasets: [{
-                label: symbol,
-                data: closes.slice(0, 7),
-                borderColor: lineColor || 'rgba(75, 192, 192, 1)',
-                backgroundColor: bgColor || 'rgba(75, 192, 192, 0.2)',
-                fill: true,
-                tension: 0.1
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: {
-                  display: true,
-                  position: 'top',
-                },
-                title: {
-                  display: true,
-                  text: `${symbol} - Last 7 Days`,
-                  font: { size: 18 }
-                },
-                tooltip: {
-                  mode: 'index',
-                  intersect: false,
-                },
-              },
-              scales: {
-                x: {
-                  display: true,
-                  title: {
-                    display: true,
-                    text: 'Date'
-                  },
-                  ticks: {
-                    autoSkip: true,
-                    maxTicksLimit: 7
-                  }
-                },
-                y: {
-                  display: true,
-                  title: {
-                    display: true,
-                    text: 'Index Value'
-                  },
-                  beginAtZero: false,
-                  suggestedMin: Math.min(...closes) * 0.95, // 5% below min
-                  suggestedMax: Math.max(...closes) * 1.05  // 5% above max
-                }
-              }
-            }
-          });
-          console.log(`Chart rendered for ${symbol}`);
-        } else {
-          console.error(`No canvas found for ${canvasId}`);
-        }
+      console.log("Gainers data received:", data);
+      const topGainers = data.slice(0, 5); // Limit to top 5
+      const container = document.querySelector(".gainers-container");
+      if (container) {
+        container.innerHTML = topGainers.map(stock => `
+          <div class="stock-card positive">
+            <h3>${stock.ticker}</h3>
+            <p>Change: +${stock.changes?.toFixed(2) || 'N/A'} (+${stock.changesPercentage?.toFixed(2) || 'N/A'}%)</p>
+            <p>Price: $${stock.price?.toFixed(2) || 'N/A'}</p>
+          </div>
+        `).join("");
       } else {
-        throw new Error("Invalid historical data format");
+        console.warn("Gainers container not found");
       }
     } catch (error) {
-      console.error(`Error fetching historical data for ${symbol}:`, error.message);
+      console.error("Error fetching gainers:", error);
+      const container = document.querySelector(".gainers-container");
+      if (container) container.innerHTML = "<p class='error'>Failed to load gainers data. Please try again later.</p>";
+    }
+  }
+
+  async function fetchTopLosers() {
+    console.log("Fetching top losers");
+    const url = `https://financialmodelingprep.com/api/v3/losers?apikey=${fmpApiKey}`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      const data = await response.json();
+      console.log("Losers data received:", data);
+      const topLosers = data.slice(0, 5); // Limit to top 5
+      const container = document.querySelector(".losers-container");
+      if (container) {
+        container.innerHTML = topLosers.map(stock => `
+          <div class="stock-card negative">
+            <h3>${stock.ticker}</h3>
+            <p>Change: ${stock.changes?.toFixed(2) || 'N/A'} (${stock.changesPercentage?.toFixed(2) || 'N/A'}%)</p>
+            <p>Price: $${stock.price?.toFixed(2) || 'N/A'}</p>
+          </div>
+        `).join("");
+      } else {
+        console.warn("Losers container not found");
+      }
+    } catch (error) {
+      console.error("Error fetching losers:", error);
+      const container = document.querySelector(".losers-container");
+      if (container) container.innerHTML = "<p class='error'>Failed to load losers data. Please try again later.</p>";
     }
   }
 
