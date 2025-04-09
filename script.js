@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Macro Hub Functions for Gainers and Losers
-  const fmpApiKey = "your_actual_fmp_api_key_here"; // Replace with your actual FMP API key
+  const fmpApiKey = "Xu2OUy8tb3K0eswCJanBbEVGd7k9pRDU";
 
   async function fetchTopGainers() {
     console.log("Fetching top gainers");
