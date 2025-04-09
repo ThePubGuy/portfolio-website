@@ -77,9 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (targetTab === "macro-hub" && !window.macroHubLoaded) {
       console.log("Loading Macro Hub data");
       fetchIndicesQuotes();
-      fetchIndexHistorical("^DJI", "dji-chart");
-      fetchIndexHistorical("^GSPC", "spx-chart");
-      fetchIndexHistorical("^IXIC", "ixic-chart");
+      fetchIndexHistorical("^AAPL", "aapl-chart");
+      fetchIndexHistorical("^TSLA", "tsla-chart");
+      fetchIndexHistorical("^NVDA", "nvda-chart");
       window.macroHubLoaded = true;
     }
   };
@@ -110,9 +110,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Macro Hub Functions
   const fmpApiKey = "Xu2OUy8tb3K0eswCJanBbEVGd7k9pRDU";
   const symbolMapping = {
-    '^DJI': 'dji',
-    '^GSPC': 'spx',
-    '^IXIC': 'ixic'
+    '^AAPL': 'aapl',
+    '^TSLA': 'tsla',
+    '^NVDA': 'nvda'
   };
 
   async function fetchIndicesQuotes() {
