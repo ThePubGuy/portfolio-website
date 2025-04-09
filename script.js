@@ -77,9 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (targetTab === "macro-hub" && !window.macroHubLoaded) {
       console.log("Loading Macro Hub data");
       fetchIndicesQuotes();
-      fetchIndexHistorical("DJI", "dji-chart");
-      fetchIndexHistorical("SPX", "spx-chart");
-      fetchIndexHistorical("IXIC", "ixic-chart");
+      fetchIndexHistorical("^DJI", "dji-chart");
+      fetchIndexHistorical("^GSPC", "spx-chart");
+      fetchIndexHistorical("^IXIC", "ixic-chart");
       window.macroHubLoaded = true;
     }
   };
@@ -108,36 +108,44 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Macro Hub Functions
-  const fmpApiKey = "Xu2OUy8tb3K0eswCJanBbEVGd7k9pRDU"
+  const fmpApiKey = "Xu2OUy8tb3K0eswCJanBbEVGd7k9pRDU";
+  const symbolMapping = {
+    '^DJI': 'dji',
+    '^GSPC': 'spx',
+    '^IXIC': 'ixic'
+  };
 
   async function fetchIndicesQuotes() {
     console.log("Fetching indices quotes");
-    const url = `https://financialmodelingprep.com/api/v3/quote/DJI,SPX,IXIC?apikey=${fmpApiKey}`;
+    const url = `https://financialmodelingprep.com/api/v3/quote/^DJI,^GSPC,^IXIC?apikey=${fmpApiKey}`;
     try {
       const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
       const data = await response.json();
-      console.log("Indices data received:", data);
+      console.log("Raw API response:", data);
+      if (!Array.isArray(data)) {
+        throw new Error("API response is not an array: " + JSON.stringify(data));
+      }
       data.forEach(index => {
         const symbol = index.symbol;
-        const price = index.price;
-        const change = index.change;
-        const percent = index.changesPercentage;
-        const cardId = symbol.toLowerCase();
+        const cardId = symbolMapping[symbol];
         const card = document.getElementById(cardId);
         if (card) {
-          card.querySelector(".price").textContent = price.toFixed(2);
-          card.querySelector(".change").textContent = change.toFixed(2);
-          card.querySelector(".percent").textContent = percent.toFixed(2);
-          if (change > 0) card.querySelector(".change").classList.add("positive");
-          else if (change < 0) card.querySelector(".change").classList.add("negative");
+          card.querySelector(".price").textContent = index.price ? index.price.toFixed(2) : 'N/A';
+          card.querySelector(".change").textContent = index.change ? index.change.toFixed(2) : 'N/A';
+          card.querySelector(".percent").textContent = index.changesPercentage ? index.changesPercentage.toFixed(2) : 'N/A';
+          if (index.change > 0) card.querySelector(".change").classList.add("positive");
+          else if (index.change < 0) card.querySelector(".change").classList.add("negative");
         } else {
           console.warn(`No card found for ${symbol}`);
         }
       });
     } catch (error) {
-      console.error("Error fetching indices quotes:", error);
+      console.error("Error fetching indices quotes:", error.message);
       const container = document.querySelector(".indices-container");
-      if (container) container.innerHTML = '<p class="error">Failed to load data. Please try again later.</p>';
+      if (container) container.innerHTML = '<p class="error">Failed to load data: ' + error.message + '</p>';
     }
   }
 
@@ -146,34 +154,84 @@ document.addEventListener("DOMContentLoaded", () => {
     const url = `https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}?serietype=line&apikey=${fmpApiKey}`;
     try {
       const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       const data = await response.json();
       const historical = data.historical;
-      if (historical) {
+      if (historical && Array.isArray(historical)) {
         console.log(`Historical data for ${symbol}:`, historical);
         const dates = historical.map(d => d.date).reverse();
         const closes = historical.map(d => d.close).reverse();
         const ctx = document.getElementById(canvasId)?.getContext("2d");
         if (ctx) {
+          // Get theme-aware colors from CSS variables
+          const lineColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-line-color').trim();
+          const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-background-color').trim();
+          
           new Chart(ctx, {
-            type: "line",
+            type: 'line',
             data: {
-              labels: dates.slice(0, 7),
+              labels: dates.slice(0, 7), // Last 7 days
               datasets: [{
                 label: symbol,
                 data: closes.slice(0, 7),
-                borderColor: "rgba(75, 192, 192, 1)",
-                backgroundColor: "rgba(75, 192, 192, 0.2)"
+                borderColor: lineColor || 'rgba(75, 192, 192, 1)',
+                backgroundColor: bgColor || 'rgba(75, 192, 192, 0.2)',
+                fill: true,
+                tension: 0.1
               }]
             },
-            options: { scales: { y: { beginAtZero: false } } }
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'top',
+                },
+                title: {
+                  display: true,
+                  text: `${symbol} - Last 7 Days`,
+                  font: { size: 18 }
+                },
+                tooltip: {
+                  mode: 'index',
+                  intersect: false,
+                },
+              },
+              scales: {
+                x: {
+                  display: true,
+                  title: {
+                    display: true,
+                    text: 'Date'
+                  },
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 7
+                  }
+                },
+                y: {
+                  display: true,
+                  title: {
+                    display: true,
+                    text: 'Index Value'
+                  },
+                  beginAtZero: false,
+                  suggestedMin: Math.min(...closes) * 0.95, // 5% below min
+                  suggestedMax: Math.max(...closes) * 1.05  // 5% above max
+                }
+              }
+            }
           });
           console.log(`Chart rendered for ${symbol}`);
         } else {
           console.error(`No canvas found for ${canvasId}`);
         }
+      } else {
+        throw new Error("Invalid historical data format");
       }
     } catch (error) {
-      console.error(`Error fetching historical data for ${symbol}:`, error);
+      console.error(`Error fetching historical data for ${symbol}:`, error.message);
     }
   }
 
