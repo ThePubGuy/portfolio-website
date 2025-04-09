@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchIndicesQuotes() {
     console.log("Fetching indices quotes");
-    const url = `https://financialmodelingprep.com/api/v3/quote/^DJI,^GSPC,^IXIC?apikey=${fmpApiKey}`;
+    const url = `https://financialmodelingprep.com/api/v3/quote/^AAPL,^TSLA,^NVDA?apikey=${fmpApiKey}`;
     try {
       const response = await fetch(url);
       if (!response.ok) {
