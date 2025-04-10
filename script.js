@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM fully loaded, initializing script");
 
-  // DOM Elements
+  // **DOM Elements**
   const tabs = document.querySelectorAll(".tab-link");
   const sections = document.querySelectorAll(".tab-content");
   const hamburger = document.querySelector(".hamburger");
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Theme switcher:", themeSwitcher);
   console.log("Back to top:", backToTop);
 
-  // Particle Configurations
+  // **Particle Configurations**
   const baseParticlesConfig = {
     particles: {
       number: { value: window.innerWidth < 768 ? 40 : 80, density: { enable: true, value_area: 800 } },
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     light: { ...baseParticlesConfig, particles: { ...baseParticlesConfig.particles, color: { value: "#000000" }, line_linked: { ...baseParticlesConfig.particles.line_linked, color: "#000000" } } }
   };
 
-  // Initialize Particles.js
+  // **Initialize Particles.js**
   console.log("Attempting to initialize Particles.js");
   if (typeof particlesJS === "undefined") {
     console.error("Particles.js library not loaded");
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Tab Switching Function
+  // **Tab Switching Function**
   const switchTab = (tab) => {
     console.log("Switching to tab:", tab.dataset.tab);
     const targetTab = tab.getAttribute("data-tab");
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.innerWidth <= 768) navLinks.classList.remove("show");
     activeSection.scrollIntoView({ behavior: "smooth", block: "start" });
 
-    // Macro Hub Data Fetch for Gainers and Losers
+    // **Load Macro Hub Data (Gainers and Losers)**
     if (targetTab === "macro-hub" && !window.macroHubLoaded) {
       console.log("Loading Macro Hub data: Gainers and Losers");
       fetchTopGainers();
@@ -82,13 +82,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Toggle Mobile Menu
+  // **Toggle Mobile Menu**
   const toggleMenu = () => {
     console.log("Toggling mobile menu");
     navLinks.classList.toggle("show");
   };
 
-  // Toggle Theme
+  // **Toggle Theme**
   const toggleTheme = () => {
     console.log("Toggling theme");
     const isLight = document.body.classList.toggle("light-theme");
@@ -105,66 +105,68 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("theme", isLight ? "light" : "dark");
   };
 
-  // Macro Hub Functions for Gainers and Losers
-  const fmpApiKey = "Xu2OUy8tb3K0eswCJanBbEVGd7k9pRDU";
+  // **Macro Hub Functions**
+  const fmpApiKey = "Xu2OUy8tb3K0eswCJanBbEVGd7k9pRDU"
 
+  // **Fetch Top Gainers**
   async function fetchTopGainers() {
-  console.log("Fetching top gainers");
-  const url = `https://financialmodelingprep.com/api/v3/gainers?apikey=${fmpApiKey}`;
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-    const data = await response.json();
-    console.log("Gainers data received:", data); // Log to inspect
-    const topGainers = data.slice(0, 5); // Limit to top 5
-    const container = document.querySelector(".gainers-container");
-    if (container) {
-      container.innerHTML = topGainers.map(stock => `
-        <div class="stock-card positive">
-          <h3>${stock.ticker}</h3>
-          <p>Change: +${stock.changes?.toFixed(2) || 'N/A'} (+${typeof stock.changesPercentage === 'number' ? stock.changesPercentage.toFixed(2) : 'N/A'}%)</p>
-          <p>Price: $${stock.price?.toFixed(2) || 'N/A'}</p>
-        </div>
-      `).join("");
-    } else {
-      console.warn("Gainers container not found");
+    console.log("Fetching top gainers");
+    const url = `https://financialmodelingprep.com/api/v3/gainers?apikey=${fmpApiKey}`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      const data = await response.json();
+      console.log("Gainers data received:", data);
+      const topGainers = data.slice(0, 5); // Limit to top 5
+      const container = document.querySelector(".gainers-container");
+      if (container) {
+        container.innerHTML = topGainers.map(stock => `
+          <div class="stock-card positive">
+            <h3>${stock.ticker}</h3>
+            <p>Change: +${typeof stock.changes === 'number' ? stock.changes.toFixed(2) : 'N/A'} (+${typeof stock.changesPercentage === 'number' ? stock.changesPercentage.toFixed(2) : 'N/A'}%)</p>
+            <p>Price: $${typeof stock.price === 'number' ? stock.price.toFixed(2) : 'N/A'}</p>
+          </div>
+        `).join("");
+      } else {
+        console.warn("Gainers container not found");
+      }
+    } catch (error) {
+      console.error("Error fetching gainers:", error);
+      const container = document.querySelector(".gainers-container");
+      if (container) container.innerHTML = "<p class='error'>Failed to load gainers data. Please try again later.</p>";
     }
-  } catch (error) {
-    console.error("Error fetching gainers:", error);
-    const container = document.querySelector(".gainers-container");
-    if (container) container.innerHTML = "<p class='error'>Failed to load gainers data. Please try again later.</p>";
   }
-}
 
+  // **Fetch Top Losers**
   async function fetchTopLosers() {
-  console.log("Fetching top losers");
-  const url = `https://financialmodelingprep.com/api/v3/losers?apikey=${fmpApiKey}`;
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-    const data = await response.json();
-    console.log("Losers data received:", data); // Log to inspect
-    const topGainers = data.slice(0, 5); // Limit to top 5
-    const container = document.querySelector(".losers-container");
-    if (container) {
-      container.innerHTML = topGainers.map(stock => `
-        <div class="stock-card negative">
-          <h3>${stock.ticker}</h3>
-          <p>Change: +${stock.changes?.toFixed(2) || 'N/A'} (+${typeof stock.changesPercentage === 'number' ? stock.changesPercentage.toFixed(2) : 'N/A'}%)</p>
-          <p>Price: $${stock.price?.toFixed(2) || 'N/A'}</p>
-        </div>
-      `).join("");
-    } else {
-      console.warn("Losers container not found");
+    console.log("Fetching top losers");
+    const url = `https://financialmodelingprep.com/api/v3/losers?apikey=${fmpApiKey}`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      const data = await response.json();
+      console.log("Losers data received:", data);
+      const topLosers = data.slice(0, 5); // Limit to top 5
+      const container = document.querySelector(".losers-container");
+      if (container) {
+        container.innerHTML = topLosers.map(stock => `
+          <div class="stock-card negative">
+            <h3>${stock.ticker}</h3>
+            <p>Change: ${typeof stock.changes === 'number' ? stock.changes.toFixed(2) : 'N/A'} (${typeof stock.changesPercentage === 'number' ? stock.changesPercentage.toFixed(2) : 'N/A'}%)</p>
+            <p>Price: $${typeof stock.price === 'number' ? stock.price.toFixed(2) : 'N/A'}</p>
+          </div>
+        `).join("");
+      } else {
+        console.warn("Losers container not found");
+      }
+    } catch (error) {
+      console.error("Error fetching losers:", error);
+      const container = document.querySelector(".losers-container");
+      if (container) container.innerHTML = "<p class='error'>Failed to load losers data. Please try again later.</p>";
     }
-  } catch (error) {
-    console.error("Error fetching losers:", error);
-    const container = document.querySelector(".losers-container");
-    if (container) container.innerHTML = "<p class='error'>Failed to load losers data. Please try again later.</p>";
   }
-}
 
-  // Theme Initialization
+  // **Theme Initialization**
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme === "light") {
     document.body.classList.add("light-theme");
@@ -172,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
     themeIcon.classList.add("fa-sun");
   }
 
-  // Event Listeners
+  // **Event Listeners**
   tabs.forEach(tab => {
     console.log("Attaching listener to tab:", tab.dataset.tab);
     tab.addEventListener("click", e => {
