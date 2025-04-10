@@ -109,60 +109,60 @@ document.addEventListener("DOMContentLoaded", () => {
   const fmpApiKey = "Xu2OUy8tb3K0eswCJanBbEVGd7k9pRDU";
 
   async function fetchTopGainers() {
-    console.log("Fetching top gainers");
-    const url = `https://financialmodelingprep.com/api/v3/gainers?apikey=${fmpApiKey}`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-      const data = await response.json();
-      console.log("Gainers data received:", data);
-      const topGainers = data.slice(0, 5); // Limit to top 5
-      const container = document.querySelector(".gainers-container");
-      if (container) {
-        container.innerHTML = topGainers.map(stock => `
-          <div class="stock-card positive">
-            <h3>${stock.ticker}</h3>
-            <p>Change: +${stock.changes?.toFixed(2) || 'N/A'} (+${stock.changesPercentage?.toFixed(2) || 'N/A'}%)</p>
-            <p>Price: $${stock.price?.toFixed(2) || 'N/A'}</p>
-          </div>
-        `).join("");
-      } else {
-        console.warn("Gainers container not found");
-      }
-    } catch (error) {
-      console.error("Error fetching gainers:", error);
-      const container = document.querySelector(".gainers-container");
-      if (container) container.innerHTML = "<p class='error'>Failed to load gainers data. Please try again later.</p>";
+  console.log("Fetching top gainers");
+  const url = `https://financialmodelingprep.com/api/v3/gainers?apikey=${fmpApiKey}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    const data = await response.json();
+    console.log("Gainers data received:", data); // Log to inspect
+    const topGainers = data.slice(0, 5); // Limit to top 5
+    const container = document.querySelector(".gainers-container");
+    if (container) {
+      container.innerHTML = topGainers.map(stock => `
+        <div class="stock-card positive">
+          <h3>${stock.ticker}</h3>
+          <p>Change: +${stock.changes?.toFixed(2) || 'N/A'} (+${typeof stock.changesPercentage === 'number' ? stock.changesPercentage.toFixed(2) : 'N/A'}%)</p>
+          <p>Price: $${stock.price?.toFixed(2) || 'N/A'}</p>
+        </div>
+      `).join("");
+    } else {
+      console.warn("Gainers container not found");
     }
+  } catch (error) {
+    console.error("Error fetching gainers:", error);
+    const container = document.querySelector(".gainers-container");
+    if (container) container.innerHTML = "<p class='error'>Failed to load gainers data. Please try again later.</p>";
   }
+}
 
   async function fetchTopLosers() {
-    console.log("Fetching top losers");
-    const url = `https://financialmodelingprep.com/api/v3/losers?apikey=${fmpApiKey}`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-      const data = await response.json();
-      console.log("Losers data received:", data);
-      const topLosers = data.slice(0, 5); // Limit to top 5
-      const container = document.querySelector(".losers-container");
-      if (container) {
-        container.innerHTML = topLosers.map(stock => `
-          <div class="stock-card negative">
-            <h3>${stock.ticker}</h3>
-            <p>Change: ${stock.changes?.toFixed(2) || 'N/A'} (${stock.changesPercentage?.toFixed(2) || 'N/A'}%)</p>
-            <p>Price: $${stock.price?.toFixed(2) || 'N/A'}</p>
-          </div>
-        `).join("");
-      } else {
-        console.warn("Losers container not found");
-      }
-    } catch (error) {
-      console.error("Error fetching losers:", error);
-      const container = document.querySelector(".losers-container");
-      if (container) container.innerHTML = "<p class='error'>Failed to load losers data. Please try again later.</p>";
+  console.log("Fetching top losers");
+  const url = `https://financialmodelingprep.com/api/v3/losers?apikey=${fmpApiKey}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    const data = await response.json();
+    console.log("Losers data received:", data); // Log to inspect
+    const topGainers = data.slice(0, 5); // Limit to top 5
+    const container = document.querySelector(".losers-container");
+    if (container) {
+      container.innerHTML = topGainers.map(stock => `
+        <div class="stock-card negative">
+          <h3>${stock.ticker}</h3>
+          <p>Change: +${stock.changes?.toFixed(2) || 'N/A'} (+${typeof stock.changesPercentage === 'number' ? stock.changesPercentage.toFixed(2) : 'N/A'}%)</p>
+          <p>Price: $${stock.price?.toFixed(2) || 'N/A'}</p>
+        </div>
+      `).join("");
+    } else {
+      console.warn("Losers container not found");
     }
+  } catch (error) {
+    console.error("Error fetching losers:", error);
+    const container = document.querySelector(".losers-container");
+    if (container) container.innerHTML = "<p class='error'>Failed to load losers data. Please try again later.</p>";
   }
+}
 
   // Theme Initialization
   const savedTheme = localStorage.getItem("theme");
